@@ -2,7 +2,15 @@ const express = require('express')
 const morgan = require('morgan')
 
 const app = express()
-app.use(morgan('tiny'))
+
+// Created a token for morgan to log the body of a POST request
+morgan.token('body', (req, res) => JSON.stringify(req.body))
+
+app.use(
+  morgan(':method :url :status :res[content-length] - :response-time ms :body')
+)
+
+// app.use(morgan('tiny'))
 app.use(express.json())
 
 const PORT = 3001
@@ -71,7 +79,7 @@ const generateId = () => {
 // POST request
 app.post('/api/persons', (request, response) => {
   const body = request.body
-  console.log(body)
+  // console.log(body)
 
   if (!body.name || !body.number) {
     return response.status(400).json({
