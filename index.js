@@ -50,12 +50,40 @@ app.get('/api/persons/:id', (request, response) => {
   }
 })
 
+// Delete person
 app.delete('/api/persons/:id', (request, response) => {
   const id = Number(request.params.id)
   console.log(id)
   persons = persons.filter((person) => person.id !== id)
 
   response.status(204).end()
+})
+
+// Add person
+const generateId = () => {
+  const id = Math.floor(Math.random() * 1e6)
+  return id
+}
+
+// POST request
+app.post('/api/persons', (request, response) => {
+  const body = request.body
+  console.log(body)
+
+  // if (!body.name || !body.number) {
+  //   return response.status(400).json({
+  //     error: 'content missing',
+  //   })
+  // }
+
+  const person = {
+    id: generateId(),
+    name: body.name,
+    number: body.number,
+  }
+
+  persons = persons.concat(person)
+  response.json(person)
 })
 
 app.listen(PORT, () => {
