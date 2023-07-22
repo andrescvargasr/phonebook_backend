@@ -27,8 +27,16 @@ const persons = [
   },
 ]
 
-app.get('/api/persons', (req, res) => {
-  res.json(persons)
+app.get('/api/persons', (request, response) => {
+  response.json(persons)
+})
+
+app.get('/info', (request, response) => {
+  const date = new Date()
+  const sendMessage = `<p>Phonebook has info for ${persons.length} people</p>
+  <p>${date}</p>`
+
+  response.send(sendMessage)
 })
 
 app.listen(PORT, () => {
