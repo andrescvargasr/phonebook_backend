@@ -1,7 +1,14 @@
 const express = require('express')
+const cors = require('cors')
 const morgan = require('morgan')
 
 const app = express()
+
+// Use the static middleware function to serve the static build directory
+app.use(express.static('build'))
+
+// Use cors middleware to allow requests from other origins
+app.use(cors())
 
 // Created a token for morgan to log the body of a POST request
 morgan.token('body', (req, res) => JSON.stringify(req.body))
@@ -12,8 +19,6 @@ app.use(
 
 // app.use(morgan('tiny'))
 app.use(express.json())
-
-const PORT = 3001
 
 let persons = [
   {
@@ -102,6 +107,8 @@ app.post('/api/persons', (request, response) => {
   persons = persons.concat(person)
   response.json(person)
 })
+
+const PORT = process.env.PORT || 3001
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
